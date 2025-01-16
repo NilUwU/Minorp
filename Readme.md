@@ -69,7 +69,7 @@ Businesses relying on mission-critical applications cannot afford downtime. Soft
 4. Set up the Ryu controller from the [official documentation](https://ryu.readthedocs.io/en/latest/getting_started.html).
 5. Clone the project repository:
    ```bash
-   git clone https://github.com/chiragbiradar/DDoS-Attack-Detection-and-Mitigation-using-Machine-Learning.git
+   https://github.com/NilUwU/Minorp.git
    ```
 
 #### Running the Controller
