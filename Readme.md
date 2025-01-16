@@ -110,12 +110,6 @@ hping3 -S -V -d 120 -w 64 -p 80 --rand-source --flood
 # udp flood
 hping3 -2 -V -d 120 -w 64 -p 80 --rand-source --flood
 ```
-<h1>You can try out the project using our vm too</h1>
-
-<h2>[Link to download our Mininet VM and Ryu Controller](shorturl.at/szH58)</h2>
-
-
-
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
@@ -137,16 +131,43 @@ hping3 -2 -V -d 120 -w 64 -p 80 --rand-source --flood
 
 
 ### Description of the Implemented system
-To achieve the  goal of detection of DDoS attack and mitigation model for SDN networks, a model is build on the application plane. The architecture of implemented method consists of the flow collector module, feature extender module, anomaly detection module, and anomaly mitigation module. The task of the flow collector is to regularly collect information on traffic flow from the flow tables of each switch. These flow entries will be delivered to the feature extender, which will produce new features for each entry. 	
+Description
 
-The anomaly detection module will receive the gathered data and use machine learning (ML) to perform flow-based detection and classify each flow as normal or abnormal. An aberrant flow  will be sent to the Mitigation module in order to stop the source of the attack, else no action will be taken.
+This project implements a model for detecting and mitigating Distributed Denial-of-Service (DDoS) attacks in Software-Defined Networking (SDN) environments. The system operates at the application plane and consists of the following modules:
 
-In order to obtain traffic data, the flow collector first contacts the controller. When the controller receives a request for traffic information, it employs 
+Flow Collector Module: Regularly collects traffic flow information from the flow tables of each switch.
 
-To gather data from flow tables,  openflow protocol is used. Every switch connected to the controller receives a flow-stats request from the controller, which asks the switch for flow statistics. As a result, each switch responds with a flow-stats reply message that includes all flow entries from all flow tables, each entry of which includes the flow description and any associated counters. The controller then replies to this component after compiling the traffic data from all the switches.
+Feature Extender Module: Enhances flow entries with additional features.
 
-The flow collector parses the flow information after receiving it and discards any unnecessary data. The flow identifier (flow-id) and the flow counters are the pertinent data that are kept. The source IP address, destination IP address, source MAC address, destination MAC address, TCP/UDP source port, TCP/UDP destination port, and transport protocol identification make up the seven-tuple that is  referred to as the flow-id (protocol). It's crucial to remember that this tuple can be modified to meet the requirements of the network infrastructure.
+Anomaly Detection Module: Uses machine learning (ML) to classify each flow as either normal or abnormal.
 
+Anomaly Mitigation Module: Takes action to mitigate detected abnormal flows by stopping the source of the attack.
+
+Flow Collection and Data Processing
+
+The flow collector communicates with the controller to obtain traffic data.
+
+The OpenFlow protocol is used to gather data from the flow tables of switches:
+
+The controller sends a flow-stats request to each connected switch.
+
+Each switch responds with a flow-stats reply, containing flow entries with descriptions and associated counters.
+
+The controller compiles traffic data from all switches and sends it to the flow collector.
+
+The flow collector parses the received data, discards unnecessary information, and retains relevant details:
+
+Flow Identifier (flow-id): Consists of a seven-tuple, including source IP address, destination IP address, source MAC address, destination MAC address, TCP/UDP source port, TCP/UDP destination port, and transport protocol identification.
+
+This tuple can be customized based on the requirements of the network infrastructure.
+
+Anomaly Detection and Mitigation
+
+The anomaly detection module uses ML techniques for flow-based detection.
+
+Flows classified as abnormal are sent to the mitigation module to stop the attack source.
+
+No action is taken for flows classified as normal.
 <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
 <h2>Software requirements specification</h2>
@@ -155,9 +176,31 @@ The flow collector parses the flow information after receiving it and discards a
 <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
 <h3> Overview of SRS:</h3>
+Overview
 
-Software Requirement Definition (SRS) is a comprehensive specification and description of the software requirements that must be met for the software systems to be developed successfully. Depending on the sort of demand, they may be both functional and non-functional. In order to thoroughly grasp the demands of consumers, contact between various customers and contractors is done.
+The Software Requirements Specification (SRS) provides a comprehensive description of the functional and non-functional requirements for the system. It ensures a clear understanding between stakeholders and developers to meet project goals effectively.
 
+Functional Requirements
+
+Traffic Flow Collection: The system must collect traffic data from all switches in real-time.
+
+Feature Extraction: The feature extender must generate additional features from raw flow entries.
+
+Anomaly Detection: The system should classify network flows as normal or abnormal using machine learning.
+
+Mitigation: The system must block or throttle abnormal flows to prevent DDoS attacks.
+
+Non-Functional Requirements
+
+Performance: The system must process flow data with minimal latency to ensure timely detection.
+
+Scalability: The solution should handle varying numbers of switches and traffic volumes.
+
+Reliability: The system should provide consistent detection and mitigation outcomes.
+
+Communication
+
+The flow collector and controller communicate using the OpenFlow protocol to manage flow-stats requests and responses. This interaction is crucial for accurate traffic monitoring and anomaly detection.
 <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
 <h4> Requirement Specification:</h4>
