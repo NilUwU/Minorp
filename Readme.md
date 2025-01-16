@@ -2,7 +2,7 @@
 
 # <p align="center">DDoS Attack Detection and Mitigation using Machine Learning</p>
 
-[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/chiragbiradar/DDoS-Attack-Detection-and-Mitigation-using-Machine-Learning?logo=github&style=for-the-badge)](https://github.com/chiragbiradar/) 
+[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/chiragbiradar/DDoS-Attack-Detection-and-Mitigation-using-Machine-Learning?logo=github&style=for-the-badge)]
 [![GitHub last commit](https://img.shields.io/github/last-commit/chiragbiradar/DDoS-Attack-Detection-and-Mitigation-using-Machine-Learning?style=for-the-badge&logo=git)](https://github.com/chiragbiradar/) 
 [![GitHub stars](https://img.shields.io/github/stars/chiragbiradar/DDoS-Attack-Detection-and-Mitigation-using-Machine-Learning?style=for-the-badge)](https://github.com/chiragbiradar/DDoS-Attack-Detection-and-Mitigation-using-Machine-Learning/stargazers) 
 [![My stars](https://img.shields.io/github/stars/chiragbiradar?affiliations=OWNER%2CCOLLABORATOR&style=for-the-badge&label=My%20stars)](https://github.com/chiragbiradar/DDoS-Attack-Detection-and-Mitigation-using-Machine-Learning/stargazers) 
@@ -16,8 +16,6 @@
 `DDoS Attack Detection and Mitigation using Machine Learning`
 
 ![image](https://user-images.githubusercontent.com/78417411/204220907-67fb2338-1023-4404-8320-b7c2967bd0a3.png)
-
-# For any Project guidance and setup: http://www.fiverr.com/s/m5Y8Z6x
 </div>
 <h2>Table of Contents🧾</h2>
 
