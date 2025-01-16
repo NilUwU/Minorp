@@ -23,420 +23,136 @@
 - [Appendix](#appendix)
 <br>
 <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+### Project Team:
+Om Srivastava (32201222114)  
+Niladri Das (32201222119)  
+Chirag Agarwal (32201222127)  
+Arijeet Mukherjee (32201222092)  
+Sujoy Karmakar (32201222118)
 
-<h2>Introduction📌</h2>
+---
 
-A distributed denial-of-service (DDoS) attack is a malicious attempt to disrupt the normal traffic of a targeted server, service, or network by overwhelming the target or its surrounding infrastructure with a flood of internet traffic.
-DDoS attacks achieve effectiveness by utilizing multiple compromised computer systems as sources of attack traffic. Exploited machines can include computers and other networked resources such as IoT devices.
-From a high level, a DDoS attack is like an unexpected traffic jam clogging up the highway, preventing regular traffic from arriving at its destination. It's critical to act soon after discovering a DDoS attack since it provides you the chance to avert significant disruption. The server can start to crash on waiting too long, and a full recovery might take hours.
-The hardest part about mitigating a DDoS attack is that often it’s virtually impossible to do so without impacting legitimate traffic. This is because attackers go to great lengths to masquerade fake traffic as real.
+### Table of Contents
 
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+- [Introduction](#introduction)
+- [Motivation](#motivation)
+- [Objectives](#objectives)
+- [Installation](#installation)
+- [Literature Survey](#literature-survey)
+- [Implemented System](#implemented-system)
+- [System Design](#system-design)
+- [Implementation](#implementation)
+- [Testing](#testing)
+- [Results and Discussion](#results-and-discussion)
+- [Conclusion](#conclusion)
+- [References](#references)
+- [Appendix](#appendix)
 
-<h2> Motivation</h2>
+---
 
-For enterprises operating at the edge with mission-critical activities that cannot afford downtime, DDoS mitigation as a protective layer is crucial. DDoS mitigation contributes to maintaining such activities' and services' ongoing availability. SDN allows for network design, construction, and operation. Attacks via distributed denial-of-service (DDoS) represent a serious risk to data centers.
-New security concerns and assaults, particularly Distributed Denial of Service (DDoS) attacks, are frequently launched against SDN networks.
+### Introduction
+A distributed denial-of-service (DDoS) attack disrupts the normal traffic of a targeted server, service, or network by overwhelming it with a flood of internet traffic. Multiple compromised systems are used as attack sources, including IoT devices. Effective mitigation is challenging, as distinguishing malicious traffic from legitimate users is complex.
 
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+### Motivation
+Businesses relying on mission-critical applications cannot afford downtime. Software-Defined Networking (SDN) provides flexibility but is vulnerable to DDoS attacks, posing severe risks to data centers. Mitigating these threats is essential for maintaining service availability and security.
 
-<h2>Objectives:</h2>
- 
-- To implement a network using mininet and Ryu controller
-- To generate the dataset
-- To apply Random Forest Machine learning algorithm to detect DDoS attack
-- To add mitigation module
+### Objectives
+- Develop a network using Mininet and Ryu controller.
+- Generate a dataset simulating network traffic.
+- Apply the Random Forest algorithm to detect DDoS attacks.
+- Implement a mitigation module to manage detected threats.
 
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+### Installation Instructions
+1. Install VirtualBox or VMware Workstation.
+2. Install Mininet-VM from the [Mininet releases](https://github.com/mininet/mininet/releases).
+3. Install Ubuntu in VirtualBox.
+4. Set up the Ryu controller from the [official documentation](https://ryu.readthedocs.io/en/latest/getting_started.html).
+5. Clone the project repository:
+   ```bash
+   git clone https://github.com/chiragbiradar/DDoS-Attack-Detection-and-Mitigation-using-Machine-Learning.git
+   ```
 
-<h2>Installation</h2>
+#### Running the Controller
+1. Check the IP address using:
+   ```bash
+   ifconfig
+   ```
+2. Navigate to the controller folder and start the Ryu controller:
+   ```bash
+   cd controller
+   ryu-manager controller.py
+   ```
 
+#### Running Mininet
+1. Switch to the Mininet directory:
+   ```bash
+   cd mininet
+   ```
+2. Update the controller IP address in `topology.py`.
+3. Run the topology:
+   ```bash
+   sudo python topology.py
+   ```
+
+#### hping Commands for Traffic Simulation
 ```bash
-- install [Virtual box](https://www.virtualbox.org/wiki/Downloads) or VM-ware workstation
-
-- install [Mininet-VM](https://github.com/mininet/mininet/releases/)
-
-- install [Ubuntu](https://ubuntu.com/download/desktop) in virtual box
-
-- install [ryu-controller](https://ryu.readthedocs.io/en/latest/getting_started.html) in ubuntu vm
-
-- Use git clone to install the code files
-```
-
-```bash
-git clone https://github.com/chiragbiradar/DDoS-Attack-Detection-and-Mitigation-using-Machine-Learning.git
-```
-
-
-<h3>Go to Ubuntu/ryu controller vm</h3> 
-
-```bash
-#check your IP address
-ifcongif
-# it should be something 198.162.XX.XX copy it
-# change working directory to controller folder
-cd controller
-
-# switch on the ryu-controller
-ryu-manager controller.py
-```
-
-
-<h3> Go to Mininet-vm</h3>
-
-```bash
-# change working directory to mininet folder
-cd mininet
-
-# change controller ip address that you copied from ryu controller ip
-nano topology.py
-
-# run topology
-sudo python topology.py
-```
-
-<h3> hping commands</h3> 
-
-```bash
-# icmp flood
+# ICMP flood
 hping3 -1 -V -d 120 -w 64 -p 80 --rand-source --flood
-```
 
-```bash
-# syn flood
+# SYN flood
 hping3 -S -V -d 120 -w 64 -p 80 --rand-source --flood
-```
-```bash
-# udp flood
+
+# UDP flood
 hping3 -2 -V -d 120 -w 64 -p 80 --rand-source --flood
 ```
-<p align="right">(<a href="#top">back to top</a>)</p>
+---
 
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+### Literature Survey
+Summaries of referenced works explore machine learning-based DDoS detection and mitigation models, emphasizing Random Forest, SVM, LSTM, and other approaches.
 
-<h2>Literature Survey</h2>
-[1] This paper proposed a model which is able to detect and mitigate DDoS attacks automatically in SDN networks using ML.All of the switches' traffic flow entries are periodically collected by the model, which then extracts the native flow features and expands them by incorporating new features. A detection module uses five features to categorize each flow as normal or anomalous. When an attack is discovered, its source is prevented. Six ML algorithms were assessed with regard to the classification ML method utilized in the detection module, including LR, NB, KNN, SVM, DT, and RF. The outcomes of the experiment demonstrated that RF is the best classifier for the generated network. Without losing typical performance, the model was able to swiftly and effectively identify and block attacks. 
+### System Design
+The SDN architecture includes:
+- **Application Layer**: Manages network applications like traffic engineering and security.
+- **Control Layer**: Centralized SDN controller that governs policies and traffic flows.
+- **Infrastructure Layer**: Physical switches and routers that forward traffic based on control plane instructions.
 
-[2] This work proposes a method of DDoS attack detection based on deep belief network feature extraction and LSTM model.  This technique uses deep learning to extract IP packet attributes, builds an LSTM traffic prediction model, and then recognises DDoS attacks using the built-in LSTM model. Technology for detecting DDoS attacks is appropriate for this system. The model can effectively forecast the pattern of typical network traffic, spot irregularities brought on by DDoS attacks, and be used to develop more DDoS attack detection techniques in the future.
+---
 
-[3] In this work, the authors proposed a model which analyzes the correlation information of flows in data centers. It offers a reliable method of detecting DDoS attacks based on CKNN (K-nearest neighbors traffic categorization with correlation analysis).
+### Implementation
+**Flow Collection Module**: Gathers traffic data using OpenFlow and extracts key flow identifiers.
 
-[4] This paper proposes a new model to detect DDoS attacks in SDN based on SVM . Firstly a trained Support Vector Machine (SVM) approach is used by the model to extract numerous important features from the packet-in messages and measure the distribution of each feature using entropy. Studies reveal that this technique is highly effective at both real-time DDoS mitigation and security event detection.
+**Detection Module**: Classifies traffic as normal or abnormal using flow-based detection with a Random Forest algorithm.
 
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+**Mitigation Module**: Prevents attacks by blocking Ethernet addresses associated with malicious flows.
 
-<h2>Implemented System</h2>
+---
 
-![image](https://github.com/NilUwU/MFdetect)
+### Testing
+The system was evaluated by classifying online traffic and blocking detected malicious sources. Random Forest was found to deliver superior accuracy compared to other models.
 
+---
 
-### Description of the Implemented system
-Description
+### Results and Discussion
+Performance evaluation showed that the Random Forest classifier achieved high detection accuracy without disrupting normal traffic.
 
-This project implements a model for detecting and mitigating Distributed Denial-of-Service (DDoS) attacks in Software-Defined Networking (SDN) environments. The system operates at the application plane and consists of the following modules:
+---
 
-Flow Collector Module: Regularly collects traffic flow information from the flow tables of each switch.
+### Conclusion
+The proposed system uses machine learning to enhance DDoS detection and mitigation in SDN environments. Random Forest provides accurate classification and effective attack prevention with minimal impact on legitimate traffic.
 
-Feature Extender Module: Enhances flow entries with additional features.
+---
 
-Anomaly Detection Module: Uses machine learning (ML) to classify each flow as either normal or abnormal.
+### References
+[1] Dong Li et al. (2018). Using SVM to Detect DDoS Attacks in SDN Network. IOP Conf. Ser.: Mater. Sci. Eng. 466 012003.  
+[2] Yijie Li et al. (2019). DDoS Attack Detection Using Deep Belief Networks. IOP Conference Series.  
+(Additional references as listed in the original document)
 
-Anomaly Mitigation Module: Takes action to mitigate detected abnormal flows by stopping the source of the attack.
+---
 
-Flow Collection and Data Processing
+### Appendix
+- **Glossary**: Defines key terms such as DDoS, SDN, and MAC address.
+- **Tools**: Mininet, Ryu controller, VirtualBox, Python, Wireshark.
 
-The flow collector communicates with the controller to obtain traffic data.
 
-The OpenFlow protocol is used to gather data from the flow tables of switches:
-
-The controller sends a flow-stats request to each connected switch.
-
-Each switch responds with a flow-stats reply, containing flow entries with descriptions and associated counters.
-
-The controller compiles traffic data from all switches and sends it to the flow collector.
-
-The flow collector parses the received data, discards unnecessary information, and retains relevant details:
-
-Flow Identifier (flow-id): Consists of a seven-tuple, including source IP address, destination IP address, source MAC address, destination MAC address, TCP/UDP source port, TCP/UDP destination port, and transport protocol identification.
-
-This tuple can be customized based on the requirements of the network infrastructure.
-
-Anomaly Detection and Mitigation
-
-The anomaly detection module uses ML techniques for flow-based detection.
-
-Flows classified as abnormal are sent to the mitigation module to stop the attack source.
-
-No action is taken for flows classified as normal.
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h2>Software requirements specification</h2>
-
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h3> Overview of SRS:</h3>
-Overview
-
-The Software Requirements Specification (SRS) provides a comprehensive description of the functional and non-functional requirements for the system. It ensures a clear understanding between stakeholders and developers to meet project goals effectively.
-
-Functional Requirements
-
-Traffic Flow Collection: The system must collect traffic data from all switches in real-time.
-
-Feature Extraction: The feature extender must generate additional features from raw flow entries.
-
-Anomaly Detection: The system should classify network flows as normal or abnormal using machine learning.
-
-Mitigation: The system must block or throttle abnormal flows to prevent DDoS attacks.
-
-Non-Functional Requirements
-
-Performance: The system must process flow data with minimal latency to ensure timely detection.
-
-Scalability: The solution should handle varying numbers of switches and traffic volumes.
-
-Reliability: The system should provide consistent detection and mitigation outcomes.
-
-Communication
-
-The flow collector and controller communicate using the OpenFlow protocol to manage flow-stats requests and responses. This interaction is crucial for accurate traffic monitoring and anomaly detection.
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h4> Requirement Specification:</h4>
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h4>Functional Requirement:</h4>
-
-- Machine learning model should be able to detect DDoS attacks
--  Communicate with the controller to request traffic information
-- Mitigate the DDoS attack without restricting the normal traffic
-
-<h4>Non-Functional Requirement:</h4>
-
--  Detect DDoS attack within 20 seconds
-- Analyze traffic data every 5 seconds to classify traffic as normal or abnormal.
-- Mitigate the malicious traffic in 2 minutes to detect its port number.
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h3>Software and Hardware requirement specification:</h3>
-
-- Windows/ Linux/ macOS
-- Virtualization software (VMware/virtual box)
-- Ryu controller
-- Mininet software
-- Wire shark (for network monitoring)
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h2>System Design</h2>
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h3>Architecture of the System</h3>
-Software-Defined Networking (SDN) is a network architecture approach that enables the network to be intelligently and centrally controlled, or 'programmed,' using software applications
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h4>SDN architecture includes three layers: </h4>
-
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h4>Application layer:</h4>
-
-The application layer is where the network applications, such as network management, traffic engineering, and security, are implemented.
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h4>Control layer:</h4>
-
-The control layer represents the centralized SDN controller software that acts as the brain of the 
-software-defined networking. This controller resides on a server and manages policies and traffic flows throughout the network.
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h3>Architecture of the System</h3>
-#### Infrastructure layer:
-The infrastructure layer is made up of the physical switches or routers in the network which forward traffic according to the instructions from the control plane.
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h3> Activity Diagram</h3>
-
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h3> Dataset Features Description:</h3>
-
-Dataset is generated using python scripts for malicious traffic and legitimate traffic
-- Dataset size = 22 columns x 2667523 rows
-- Data description:
-- Ip_source - source IP address
-- Ip_dst - destination IP address
-- Icmp_type 
-- Flow duration 
-- Idle time 
-- Packet_count 
-- Label - classify malicious or legitimate traffic(1=legitimate & 0=malicious)
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h2> Implementation</h2>
-
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h3>Implemented Methodology</h3>
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h4>Explanation:</h4>
-
-The Implemented system consists of a detection module and a mitigation module. The model is trained  on the dataset that is  generated .
-
-To generate the dataset, a topology in SDN using mininet. simulated network traffic(normal traffic and anomalous traffic) is created. Then feature's source IP, destination IP, port number, and timestamp from the packets using the RYU controller are extracted.
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h3>Network topology:</h3>
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h3>Module Description</h3>
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h4>Traffic Control module:</h4>
-
-In order to obtain traffic data, the Flow Collector first contacts the controller. When the controller receives a request for traffic information, it employs To gather data from flow tables, 1use OpenFlow protocol. Every switch connected to the controller receives a flow-stats request from the controller, which asks the switch for flow statistics. As a result, each switch responds with a flow-stats reply message that includes all flow entries from all flow tables, each entry of which includes the flow description and any associated counters. The controller then answers this component after compiling the traffic data from all the switches. The Flow Collector parses the flow information after receiving it and discards any unnecessary data. The flow identifier (flow-id) and the flow counters are the pertinent data that are kept. The source IP address, destination IP address, source MAC address, destination MAC address, TCP/UDP source port, TCP/UDP destination port, and transport protocol identification make up the seven-tuple that is referred to as the flow-id (protocol). It's crucial to remember that this tuple can be modified to meet the requirements of the network infrastructure. Only three counters—the packet count, byte count, and duration—are included in the OpenFlow flow counters.
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h4>Detection module:</h4>
-
-Depending on the source of the data to be studied or the method used to identify anomalous occurrences, there are several categories that might be used to classify intrusion detection. Flow-based or packet-based detection is employed depending on the data to be processed, and depending on the detection method, signature-based or anomaly-based detection can be utilized.
-
-Flow-based detection was selected based on the source of the data to be evaluated since it would be more suited for high-speed networks and more effective than packet-based detection in terms of processing and memory overhead.
-
-Anomaly-based intrusion detection is implemented  as a detection method, and more specifically, detection with ML.
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h4>Mitigation module:</h4>
-
-Once a malicious flow has been verified by the anomaly detection module, the Anomaly Mitigation module is in charge of implementing mitigation measures to prevent network disruption or performance degradation. In the  framework, attack at its source is stopped. The preventing attacks caused by IP spoofing does not necessarily involve banning the attackers' IP addresses. For proof-of-concept purposes, in this case,   attacker's Ethernet address is blocked.
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h2> Testing</h2>
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h3> Test Plan and Test Cases:</h3>
-
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h2> Results & Discussion</h2>
-
-After designing the attack detection and mitigation method,the results are tested and evaluated.  The evaluation of the framework includes the evaluation of the different ML algorithms, and a comparison of the different models used. The below table shows the accuracies of different models used:
-
-
-From the above table, it can be seen that random forest gives the best accuracy to categorize normal and malicious traffic.
-
-In order to evaluate the performance of the model,  a test is performed by process of online traffic classification and attack mitigation. For mitigating attacks, firewall rules were set to block attacks that were detected. Thus, for every flow detected as malicious, a firewall rule is installed to block the Ethernet address from which the attack is launched.  The Python code of the generated prototype is implemented , and then normal traffic is generated as background traffic, and DDoS attack is detected.
-
-Results from the below graph shows that after the traffic is launched it is collected and detected and firewall rules were installed to block the source attack.After this point all the attacks generated from the source were blocked without affecting normal traffic.
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h2>Conclusion</h2>
- 
-In this work, a random forest machine learning algorithm is used to develop a model that can automatically identify and mitigate DDoS assaults in SDN networks. All of the traffic flow entries are regularly collected by the model, which then extracts the native flow features and expands them by including additional features. A detection module uses five criteria to categorize each flow as normal or anomalous. When an attack is discovered, its source is prevented. Three ML algorithms were assessed with regard to the classification ML method utilized in the detection module, including random forest, SVM, and KNN.
-The outcomes of the experiment demonstrated that RF is the best classifier for the generated network. Without disrupting regular traffic, the implemented methodology proved effective at swiftly and correctly identifying and thwarting threats.
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h2> References</h2>
-
-Here are some related papers
-
-[[1] Dong Li,Chang Yu, Qizhao Zhou and Junqing Yu .”Using SVM to Detect DDoS Attacks in SDN Network.” 2018 IOP Conf. Ser.: Mater. Sci. Eng. 466 012003,2018 .](https://iopscience.iop.org/article/10.1088/1757-899X/466/1/012003/meta)
-
-[[2] Yijie Li, Boyi Liu, Shang Zhai and Mingrui Chen ,”DDoS attack detection method based on feature extraction of deep belief networks.”,IOP Conference Series: Earth and Environmental Science, Volume 252, Issue 3,2019.](https://iopscience.iop.org/article/10.1088/1755-1315/252/3/032013/met)
-
-[[3] Peng Xiao,Wenyu Qu,Heng Qi ,Zhiyang Li.”Detecting DDoS attacks against data centers with correlation analysis.”,Computer Communications 67,2015.](https://www.sciencedirect.com/science/article/abs/pii/S0140366415002285)
-
-[[4] Fatima Khashab, Joanna Moubarak, Antoine Feghali , and Carole Bassil.”DDoS Attack Detection and Mitigation in SDN using Machine Learning”,IEEE 7th International Conference on Network Softwarization (NetSoft),2021.](https://ieeexplore.ieee.org/abstract/document/9492558/)
-
-[[5] Bawany NZ, Shamsi JA, Salah K. DDoS attack detection and mitigation  using
- SDN:     methods, practices, and solutions. Arabian Journal for Science and 
- Engineering. 2017 Feb;42(2):425-41.](https://link.springer.com/article/10.1007/s13369-017-2414-5)
-
-
-[[6] Dharma, N.G., Muthohar, M.F., Prayuda, J.A., Priagung, K. and Choi, D., 2015,
-August. Time-based DDoS detection and mitigation for SDN controller. In 
-2015 17th Asia-Pacific Network Operations and Management Symposium (APNOMS) (pp. 550-553). IEEE.](https://ieeexplore.ieee.org/abstract/document/7275389/)
-            
-[[7]  da Silveira Ilha, A., Lapolli, A.C., Marques, J.A. and Gaspary, L.P., 2020. Euclid: A fully in-network, P4-based approach for real-time DDoS attack detection and mitigation. IEEE Transactions on Network and Service Management, 18(3), pp.3121-3139.](https://ieeexplore.ieee.org/abstract/document/9311137/)
-
-    
-[[8] Singh, J. and Behal, S., 2020. Detection and mitigation of DDoS attacks in SDN: A comprehensive review, research challenges and future directions. Computer Science Review, 37, p.100279.](https://www.sciencedirect.com/science/article/abs/pii/S1574013720301647)
-
-
-[[9] Mihoub A, Fredj OB, Cheikhrouhou O, Derhab A, Krichen M. Denial of service attack detection and mitigation for internet of things using looking-back-enabled machine learning techniques. Computers & Electrical Engineering. 2022 Mar 1;98:107716.](https://www.sciencedirect.com/science/article/abs/pii/S0045790622000337)
-
-
-[[10] Miao, R., Yu, M. and Jain, N., 2014. Nimbus: cloud-scale attack detection and mitigation. Acm sigcomm computer communication review, 44(4), pp.121-122.](https://www.researchgate.net/publication/286424649_NIMBUS)
-
-
-[[11] Srinivasan, Karthik, Azath Mubarakali, Abdulrahman Saad Alqahtani, and A. Dinesh Kumar. "A survey on the impact of DDoS attacks in cloud computing: prevention, detection and mitigation techniques." In Intelligent Communication Technologies and Virtual Mobile Networks, pp. 252-270. Springer, Cham, 2019.](https://www.springerprofessional.de/en/a-survey-on-the-impact-of-ddos-attacks-in-cloud-computing-preven/17060314)
-
-
-[[12] Kautish, Sandeep, A. Reyana, and Ankit Vidyarthi. "SDMTA: Attack Detection and Mitigation Mechanism for DDoS Vulnerabilities in Hybrid Cloud Environment." IEEE Transactions on Industrial Informatics (2022).](https://ieeexplore.ieee.org/document/9695185)
-
-
-[[13] Gadze, James Dzisi, Akua Acheampomaa Bamfo-Asante, Justice Owusu Agyemang, Henry Nunoo-Mensah, and Kwasi Adu-Boahen Opare. "An investigation into the application of deep learning in the detection and mitigation of DDOS attack on SDN controllers." Technologies 9, no. 1 (2021): ](https://www.mdpi.com/2227-7080/9/1/14)
-
-
-[[14] Jaramillo, L.E.S., 2018. Malware detection and mitigation techniques: lessons learned from Mirai DDOS attack. Journal of Information Systems Engineering & Management, 3(3), p.19.](https://www.researchgate.net/publication/326425061_Malware_Detection_and_Mitigation_Techniques_Lessons_Learned_from_Mirai_DDOS_Attack)
-
-
-[[15] Al-Duwairi, B., Al-Kahla, W., AlRefai, M.A., Abedalqader, Y., Rawash, A. and Fahmawi, R., 2020. SIEM-based detection and mitigation of IoT-botnet DDoS attacks. International Journal of Electrical and Computer Engineering, 10(2), p.2182.](https://ijece.iaescore.com/index.php/IJECE/article/view/20812)
-
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h2> Appendix</h2>
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h3>Glossary</h3>
-
-- DDoS:It is a type of cyber attack that is carried out by flooding the target website or network with a large amount of traffic from multiple sources, with the aim of overwhelming the system and making it unavailable to users 
-- Network Virtualization:Network virtualization is a technology that allows multiple virtual networks to be created and run on top of a physical network infrastructure.
-- SDN:Network virtualization is a technology that allows multiple virtual networks to be created and run on top of a physical network infrastructure.
-- Data Plane:the part of a network that is responsible for forwarding traffic between devices.
-- Network Plane:it often refers to be as control plane
-- Routers:device that is responsible for forwarding traffic between different networks.
-- MAC address:It is a hardware address that is burned into the network interface during the manufacturing process, and it is used to identify the device on a network
-- IP Address:it provides the location of the host in the network
-- SYN Flood which is used to initiate a TCP connection, but not completing the final step of the process.
-- ICMP Floodan ICMP echo request is a message that is sent to a network device to determine whether it is reachable and responding.
-- SMURF Flood:sending large number of of icmpv4 flood
- UDP Flood:it and making it unavailable to legitimate users
-
-<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-
-<h3>Description of Tools & Technology used</h3>
-
-- Mininet:Mininet is a tool for software-defined networks.
-- RYU controller:Ryu Controller is an open, software-defined networking (SDN) Controller designed to increase the agility of the network by making it easy to manage and adapt how traffic is handled.
-- Virtual Box:Virtualization software
-- Linux:Operating system
-- Python:Programming Language
 - Wireshark:Network Monitoring tool
 
